@@ -1,5 +1,5 @@
 casper.options.viewportSize = {width: 1366, height: 768};
-var value,test1;
+var value;
 
 casper.test.begin('Father.cpt', function(test) {
    casper.start('http://localhost:8075/WebReport/ReportServer?reportlet=demo%2Fparameter%2FFather.cpt');
