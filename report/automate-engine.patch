@@ -1,0 +1,403 @@
+Index: connect.js
+===================================================================
+--- connect.js	(revision 0)
++++ connect.js	(working copy)
+@@ -0,0 +1,60 @@
++casper.options.viewportSize = {width: 1366, height: 768};
++var ID;
++
++casper.test.begin('connect.cpt test', function(test) {
++casper.start('http://localhost:8075/WebReport/ReportServer?reportlet=demo%2Fparameter%2Fconnect.cpt');
++
++   casper.then(function() {
++        this.evaluate(function() {
++            $($(".fr-trigger-texteditor")[0]).attr("value",'华北');
++            $($(".fr-trigger-texteditor")[1]).attr("value",'天津');
++            $($(".fr-trigger-texteditor")[2]).attr("value",'三川实业有限公司');
++        });
++    });
++   casper.waitForSelector("#fr-btn-FORMSUBMIT0 button",
++       function success() {
++           test.assertExists("#fr-btn-FORMSUBMIT0 button","点击查询");
++           this.click("#fr-btn-FORMSUBMIT0 button");
++       });
++    casper.wait(1000, function() {
++             this.echo("加载完毕");
++});   
++    casper.then(function() {
++        ID =this.evaluate(function() {
++            return  document.getElementsByClassName("fh bw pl2 brw1 brss bbw1 bbss bl0 btw1 btss")[0].innerHTML;
++        });
++        casper.echo(ID);
++        this.test.assertEquals(ID,"10952");
++    });
++    
++    casper.reload(function() {
++     this.echo("loaded again");
++    });
++    
++    casper.then(function() {
++        this.evaluate(function() {
++            $($(".fr-trigger-texteditor")[0]).attr("value",'华东');
++            $($(".fr-trigger-texteditor")[1]).attr("value",'南京');
++            $($(".fr-trigger-texteditor")[2]).attr("value",'通恒机械');
++        });
++    });
++   casper.waitForSelector("#fr-btn-FORMSUBMIT0 button",
++       function success() {
++           test.assertExists("#fr-btn-FORMSUBMIT0 button","点击查询");
++           this.click("#fr-btn-FORMSUBMIT0 button");
++       });
++    casper.wait(1000, function() {
++             this.echo("another");
++});   
++    casper.then(function() {
++        ID =this.evaluate(function() {
++            return  document.getElementsByClassName("fh bw pl2 brw1 brss bbw1 bbss bl0 btw1 btss")[0].innerHTML;
++        });
++        casper.echo(ID);
++        this.test.assertEquals(ID,"10278");
++    });
++    
++   casper.run(function() {
++       test.done();
++   });
++});
+\ No newline at end of file
+Index: divcolumn.js
+===================================================================
+--- divcolumn.js	(revision 0)
++++ divcolumn.js	(working copy)
+@@ -0,0 +1,27 @@
++casper.options.viewportSize = {width: 1366, height: 643};
++var title1,seqLength;
++
++casper.test.begin('divcolumn.cpt test', function(test) {
++   casper.start('http://localhost:8075/WebReport/ReportServer?reportlet=demo%2Fparameter%2Fdivcolumn.cpt');
++   casper.waitForSelector("#fr-btn-FORMSUBMIT0 button",
++       function success() {
++           test.assertExists("#fr-btn-FORMSUBMIT0 button");
++           this.click("#fr-btn-FORMSUBMIT0 button");
++       });
++    casper.wait(1000, function() {
++           casper.then(function() {
++               title1 =this.evaluate(function() {
++               return  document.getElementsByClassName("fh bw f11-0 pl2 brw1 brss bbw1 bbss blw1 blss btw1 btss")[0].innerHTML;
++        });
++               seqLength =this.evaluate(function() {
++               return  document.getElementsByClassName("fh bw pl2 brw1 brss bbw1 bbss bl0 btw1 btss").length;
++        });
++        casper.echo(title1);
++        this.test.assertEquals(title1,"序号");
++        this.test.assertEquals(seqLength,38);
++    });
++});   
++   casper.run(function() {
++       test.done();
++   });
++});
+\ No newline at end of file
+Index: Father.js
+===================================================================
+--- Father.js	(revision 0)
++++ Father.js	(working copy)
+@@ -0,0 +1,25 @@
++casper.options.viewportSize = {width: 1366, height: 768};
++var value;
++
++casper.test.begin('Father.cpt', function(test) {
++   casper.start('http://localhost:8075/WebReport/ReportServer?reportlet=demo%2Fparameter%2FFather.cpt');
++   casper.then(function() {
++        value =this.evaluate(function() {
++            return  $($(".fr-texteditor")[0]).val();
++        });
++
++        this.test.assertEquals(value, "ALFKI");
++    });
++   casper.waitForSelector("#fr-btn-BUTTON0 button",
++       function success() {
++           test.assertExists("#fr-btn-BUTTON0 button");
++           this.click("#fr-btn-BUTTON0 button");
++       },
++       function fail() {
++           test.assertExists("#fr-btn-BUTTON0 button");
++   });
++   casper.run(function() {
++       test.done();
++       
++   });
++});
+\ No newline at end of file
+Index: multivalue.js
+===================================================================
+--- multivalue.js	(revision 0)
++++ multivalue.js	(working copy)
+@@ -0,0 +1,31 @@
++casper.options.viewportSize = {width: 1366, height: 768};
++var exp,startTime,endTime;
++
++casper.test.begin('multivalue.cpt test', function(test) {
++    casper.start('http://localhost:8075/WebReport/ReportServer?reportlet=demo%2Fparameter%2Fmultivalue.cpt');
++//   casper.waitForSelector("#fr-btn-FORMSUBMIT0 button",
++//       function success() {
++//           test.assertExists("#fr-btn-FORMSUBMIT0 button");
++//           this.click("#fr-btn-FORMSUBMIT0 button");
++//       });
++    casper.wait(100, function() {
++           casper.then(function() {
++               exp =this.evaluate(function() {
++               return  document.getElementsByClassName("fh bw pl2 brw1 brss bbw1 bbss blw1 blss btw1 btss")[0].innerHTML;
++        });
++               startTime =this.evaluate(function() {
++               return  document.getElementsByClassName("fh bw pl2 brw1 brss bbw1 bbss blw1 blss btw1 btss")[2].innerHTML;
++        });
++               endTime =this.evaluate(function() {
++               return  document.getElementsByClassName("fh bw pl2 br0 bbw1 bbss blw1 blss btw1 btss")[0].innerHTML;
++        });
++        
++        this.test.assertEquals(exp,"仓库1,仓库3");
++        this.test.assertEquals(startTime,"2010-02-01");
++        this.test.assertEquals(endTime,"2010-07-30");
++    });
++});   
++   casper.run(function() {
++       test.done();
++   });
++});
+\ No newline at end of file
+Index: number.js
+===================================================================
+--- number.js	(revision 0)
++++ number.js	(working copy)
+@@ -0,0 +1,53 @@
++casper.options.viewportSize = {width: 1366, height: 768};
++var rowSet,rowLength;
++
++casper.test.begin('number.cpt test', function(test) {
++    casper.start('http://localhost:8075/WebReport/ReportServer?reportlet=demo%2Fparameter%2Fnumber.cpt');
++  casper.waitForSelector("#fr-btn-FORMSUBMIT0 button",
++      function success() {
++          test.assertExists("#fr-btn-FORMSUBMIT0 button");
++          this.click("#fr-btn-FORMSUBMIT0 button");
++      });
++    casper.wait(1000, function() {
++           casper.then(function() {
++               rowSet =this.evaluate(function() {
++               return  $($(".fr-texteditor")[1]).val();
++        });
++               rowLength =this.evaluate(function() {
++               return  document.getElementsByClassName("fh bw pl2 brw1 brss bbw1 bbss bl0 btw1 btss").length;
++        });
++        
++        this.test.assertEquals(rowSet,"20");
++        this.test.assertEquals(rowLength,20);
++    });
++}); 
++   casper.reload(function() {
++    this.echo("刷新页面");
++});
++   casper.then(function() {
++               rowSet =this.evaluate(function() {
++               return  $($(".fr-texteditor")[1]).attr("value","6");
++        });
++   });
++     casper.waitForSelector("#fr-btn-FORMSUBMIT0 button",
++      function success() {
++          test.assertExists("#fr-btn-FORMSUBMIT0 button");
++          this.click("#fr-btn-FORMSUBMIT0 button");
++      });
++    casper.wait(1000, function() {
++           casper.then(function() {
++               rowSet =this.evaluate(function() {
++               return  $($(".fr-texteditor")[1]).val();
++        });
++               rowLength =this.evaluate(function() {
++               return  document.getElementsByClassName("fh bw pl2 brw1 brss bbw1 bbss bl0 btw1 btss").length;
++        });
++        
++        this.test.assertEquals(rowSet,"6");
++        this.test.assertEquals(rowLength,6);
++    });
++}); 
++   casper.run(function() {
++       test.done();
++   });
++});
+\ No newline at end of file
+Index: query_custom.js
+===================================================================
+--- query_custom.js	(revision 0)
++++ query_custom.js	(working copy)
+@@ -0,0 +1,40 @@
++casper.options.viewportSize = {width: 1366, height: 768};
++var startDate,endDate,area,id;
++
++casper.test.begin('query_custom.cpt test', function(test) {
++   casper.start('http://localhost:8075/WebReport/ReportServer?reportlet=demo%2Fparameter%2Fquery_custom.cpt');
++   casper.then(function() {
++        startDate =this.evaluate(function() {
++            return  $($(".fr-trigger-texteditor")[0]).val();
++        });
++        endDate =this.evaluate(function() {
++            return  $($(".fr-trigger-texteditor")[2]).val();
++        });
++        area =this.evaluate(function() {
++            return  $($(".fr-trigger-texteditor")[4]).val();
++        });
++
++        this.test.assertEquals(startDate, "2012-01-01");
++        this.test.assertEquals(endDate, "2012-12-31");
++        this.test.assertEquals(area, "华北");
++    });
++   casper.waitForSelector("#fr-btn-SEARCH button",
++       function success() {
++           test.assertExists("#fr-btn-SEARCH button");
++           this.click("#fr-btn-SEARCH button");
++       },
++       function fail() {
++           test.assertExists("#fr-btn-SEARCH button");
++   });
++   casper.wait(1000, function() {
++            id =this.evaluate(function() {
++            return  document.getElementsByClassName("fh bw pl2 brw1 brss bbw1 bbss bl0 btw1 btss")[0].innerHTML;
++        });
++        this.test.assertEquals(id, "10811");
++   });
++
++   casper.run(function() {
++       test.done();
++       
++   });
++});
+\ No newline at end of file
+Index: query_like.js
+===================================================================
+--- query_like.js	(revision 0)
++++ query_like.js	(working copy)
+@@ -0,0 +1,57 @@
++casper.options.viewportSize = {width: 1366, height: 768};
++var querName,coName1,coName2,cop1,cop2;
++
++casper.test.begin('query_like.cpt test', function(test) {
++    casper.start('http://localhost:8075/WebReport/ReportServer?reportlet=demo%2Fparameter%2Fquery_like.cpt');
++//   casper.waitForSelector("#fr-btn-FORMSUBMIT0 button",
++//       function success() {
++//           test.assertExists("#fr-btn-FORMSUBMIT0 button");
++//           this.click("#fr-btn-FORMSUBMIT0 button");
++//       });
++    casper.wait(1000, function() {
++           casper.then(function() {
++               querName =this.evaluate(function() {
++               return  $($(".fr-texteditor")[0]).val();
++        });
++               coName1 =this.evaluate(function() {
++               return  document.getElementsByClassName("fh bw pl2 brw1 brss bbw1 bbss bl0 btw1 btss")[0].innerHTML;
++        });
++               coName2 =this.evaluate(function() {
++               return  document.getElementsByClassName("fh bw pl2 brw1 brss bbw1 bbss bl0 btw1 btss")[9].innerHTML;
++        });
++        
++        this.test.assertEquals(querName,"佳");
++        this.test.assertEquals(coName1,"佳佳乐");
++        this.test.assertEquals(coName2,"佳佳");
++    });
++});   
++
++    casper.then(function() {
++               this.evaluate(function() {
++               $($(".fr-texteditor")[0]).attr("value","普");
++        });
++    });
++    casper.waitForSelector("#fr-btn-FORMSUBMIT0 button",
++      function success() {
++          test.assertExists("#fr-btn-FORMSUBMIT0 button");
++          this.click("#fr-btn-FORMSUBMIT0 button");
++    });
++    
++    casper.wait(1000, function() {
++           casper.then(function() {
++               querName =this.evaluate(function() {
++               return  $($(".fr-texteditor")[0]).val();
++        });
++               coName1 =this.evaluate(function() {
++               return  document.getElementsByClassName("fh bw pl2 brw1 brss bbw1 bbss bl0 btw1 btss")[0].innerHTML;
++        });
++        
++        this.test.assertEquals(querName,"普");
++        this.test.assertEquals(coName1,"普三");
++        });
++    }); 
++
++   casper.run(function() {
++       test.done();
++   });
++});
+\ No newline at end of file
+Index: season.js
+===================================================================
+--- season.js	(revision 0)
++++ season.js	(working copy)
+@@ -0,0 +1,62 @@
++casper.options.viewportSize = {width: 1366, height: 768};
++var coName,year;
++
++casper.test.begin('season.cpt test', function(test) {
++    casper.start('http://localhost:8075/WebReport/ReportServer?reportlet=demo%2Fparameter%2Fseason.cpt');
++
++    casper.then(function() {
++               this.evaluate(function() {
++               $($(".fr-trigger-texteditor")[0]).attr("value","前两年");
++        });
++    });
++    casper.waitForSelector("#fr-btn-FORMSUBMIT0 button",
++       function success() {
++          test.assertExists("#fr-btn-FORMSUBMIT0 button");
++           this.click("#fr-btn-FORMSUBMIT0 button");
++       });
++    
++    casper.wait(1000, function() {
++           casper.then(function() {
++               coName =this.evaluate(function() {
++               return  document.getElementsByClassName("fh bw pl2 brw1 brss bbw1 bbss blw1 blss btw1 btss")[6].innerHTML;
++        });
++        this.echo(coName);
++               year =this.evaluate(function() {
++               return  document.getElementsByClassName("fh bw pl2 brw1 brss bbw1 bbss blw1 blss btw1 btss")[7].innerHTML;
++        });
++        
++        this.test.assertEquals(coName,"思维科技");
++        this.test.assertEquals(year,"2013");
++    });
++});   
++
++    casper.then(function() {
++               this.evaluate(function() {
++               $($(".fr-trigger-texteditor")[0]).attr("value","前五年");
++        });
++    });
++    casper.waitForSelector("#fr-btn-FORMSUBMIT0 button",
++      function success() {
++          test.assertExists("#fr-btn-FORMSUBMIT0 button");
++          this.click("#fr-btn-FORMSUBMIT0 button");
++    });
++    
++    casper.wait(1000, function() {
++           casper.then(function() {
++               coName =this.evaluate(function() {
++               return  document.getElementsByClassName("fh bw pl2 brw1 brss bbw1 bbss blw1 blss btw1 btss")[6].innerHTML;
++        });
++        this.echo(coName);
++               year =this.evaluate(function() {
++               return  document.getElementsByClassName("fh bw pl2 brw1 brss bbw1 bbss blw1 blss btw1 btss")[7].innerHTML;
++        });
++        
++        this.test.assertEquals(coName,"思维科技");
++        this.test.assertEquals(year,"2010");
++    });
++}); 
++
++   casper.run(function() {
++       test.done();
++   });
++});
+\ No newline at end of file
